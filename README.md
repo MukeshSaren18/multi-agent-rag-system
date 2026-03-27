@@ -17,7 +17,7 @@ User Query (FastAPI)
        │
        ▼
 ┌─────────────────────────────────┐
-│         LangGraph Orchestrator   │
+│         LangGraph Orchestrator  │
 │                                 │
 │  ┌──────────────────────────┐   │
 │  │  Query Decomposer Agent  │   │  ← Breaks complex queries into sub-queries
