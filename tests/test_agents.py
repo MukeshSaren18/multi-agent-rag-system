@@ -7,7 +7,15 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from app.models.schemas import SubQuery, RetrievedDocument
 
 
-# ── Query Decomposer ──────────────────────────────────────────────────────────
+# Mock ChatOpenAI for all tests to avoid API key validation errors
+@pytest.fixture(autouse=True)
+def mock_openai():
+    """Mock ChatOpenAI before any agent imports"""
+    with patch("langchain_openai.chat_models.ChatOpenAI"):
+        yield
+
+
+# ── Query Decomposer ────────────────────────────────────────────────────────
 
 class TestQueryDecomposerAgent:
     @pytest.mark.asyncio
@@ -43,7 +51,7 @@ class TestQueryDecomposerAgent:
         assert result[0].intent == "factual"
 
 
-# ── Retriever ─────────────────────────────────────────────────────────────────
+# ── Retriever ───────────────────────────────────────────────────────────
 
 class TestRetrieverAgent:
     @pytest.mark.asyncio
@@ -81,7 +89,7 @@ class TestRetrieverAgent:
         assert results == []
 
 
-# ── Synthesizer ───────────────────────────────────────────────────────────────
+# ── Synthesizer ──────────────────────────────────────────────────────────
 
 class TestSynthesizerAgent:
     @pytest.mark.asyncio
@@ -111,7 +119,7 @@ class TestSynthesizerAgent:
         assert "No relevant documents" in answer
 
 
-# ── FastAPI endpoints ─────────────────────────────────────────────────────────
+# ── FastAPI endpoints ────────────────────────────────────────────────────────
 
 class TestAPIEndpoints:
     @pytest.fixture
